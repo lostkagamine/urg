@@ -48,12 +48,7 @@ function game:switchState(name, args)
         game.state:init(args)
     end
 
-    -- RESET THE SCREEN VARIABLES
-    screenX = 0
-    screenY = 0
-    screenCol = {1, 1, 1, 1}
-
-    love.window.setTitle("Unnamed Project: "..name)
+    love.window.setTitle("Unnamed Rhythm Game: "..name)
 end
 
 function love.load(args)
@@ -105,5 +100,11 @@ end
 function love.keypressed(k, sc, r)
     if game.state and game.state.keyDown then
         game.state:keyDown(k, sc, r)
+    end
+end
+
+function love.keyreleased(k, sc)
+    if game.state and game.state.keyUp then
+        game.state:keyUp(k, sc)
     end
 end

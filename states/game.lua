@@ -22,7 +22,7 @@ return {
         for i=game.curr.note, #game.chart.notes do
             local obj = game.chart.notes[i]
             local j = obj.notes
-            love.graphics.draw(game.assets.note, LEFT_OFFSET+((j-1)*NOTE_WIDTH), (600-BOTTOM_OFFSET)-((obj.beat-game.beat)*NOTE_HEIGHT*(2*game.highspeed)))
+            love.graphics.draw(game.assets.note, LEFT_OFFSET+((j-1)*NOTE_WIDTH), (600-BOTTOM_OFFSET)-((obj.beat-game.beat)*NOTE_HEIGHT*(8*game.highspeed)))
         end
 
         if game.lastjudgetime <= love.timer.getTime()+0.75 and game.lastjudge ~= 0 then

@@ -4,6 +4,8 @@ game.keys = {
     "d", "f", "j", "k"
 }
 
+game.highspeed = 1 --lmao iidx term
+
 function game:load(sobj)
     -- Loads a song and begins gameplay.
 
@@ -46,8 +48,6 @@ function game:init()
     game.lastjudge = 0
     game.lastjudgetime = 0
     game.combo = 0
-
-    game.highspeed = 3 --lmao iidx term
 end
 
 function game:calcnoteoffset()
