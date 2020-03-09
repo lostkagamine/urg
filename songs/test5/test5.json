@@ -1,0 +1,16 @@
+{
+    "audio": "test.ogg",
+    "title": "Test Track V",
+    "author": "ry00001",
+    "offset": 0,
+    "bpms": [
+        [0, 120]
+    ],
+    "notes": [
+        {"beat": 1, "notes": 1},
+        {"beat": 2, "notes": 2},
+        {"beat": 2, "notes": 3},
+        {"beat": 3, "notes": 3},
+        {"beat": 4, "notes": 4}
+    ]
+}
