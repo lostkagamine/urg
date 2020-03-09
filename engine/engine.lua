@@ -50,6 +50,10 @@ function game:init()
     game.highspeed = 3 --lmao iidx term
 end
 
+function game:calcnoteoffset()
+    return game.inputoffset + (game.chart.offset or 0)
+end
+
 function game:update()
     if not game.started then
         game.started = true
@@ -62,13 +66,16 @@ function game:update()
         game.spb = 60/game.bpm
     end
 
-    if game.beat >= (game.chart.notes[game.curr.note] or {beat=math.huge}).beat+0.250 then
-        game.curr.note = game.curr.note + 1
+    local ind, closest = findclosestnote() or -1, {beat=math.huge}
+    local note_audiopos = (closest.beat*60) / game.bpm
+    local curr_audiopos = game.audio:tell() + game:calcnoteoffset()
+
+    if curr_audiopos >= note_audiopos+game.judgewindows[4]/2 then
+        table.remove(game.chart.notes, ind)
         game:registerjudgment(4)
     end
 
-    local audiopos = game.audio:tell()
-    game.beat = (audiopos - game.chart.offset)/game.spb
+    game.beat = (curr_audiopos - game:calcnoteoffset())/game.spb
 end
 
 function game:registerjudgment(t)
@@ -86,7 +93,7 @@ function game:checkinput()
     local ind, bobj = findclosestnote()
     if not bobj then return false end
     local note_audiopos = (bobj.beat*60) / game.bpm
-    local curr_audiopos = game.audio:tell()
+    local curr_audiopos = game.audio:tell() + game:calcnoteoffset()
 
     local jud = 1
 

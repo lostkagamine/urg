@@ -15,6 +15,8 @@ require "engine/engine"
 
 local next_time = love.timer.getTime()
 
+game.inputoffset = 0 -- MILLISECONDS
+
 game.states = {
     'game',
     'songselect'
