@@ -106,7 +106,6 @@ function game:checkinput()
                 print("judgement")
                 game:registerjudgment(jud)
                 table.remove(game.chart.notes, ind-1)
-                game.curr.note = game.curr.note + 1
                 return true
             end
         end
