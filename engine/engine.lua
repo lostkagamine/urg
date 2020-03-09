@@ -105,7 +105,7 @@ function game:checkinput()
             if note_audiopos <= curr_audiopos + game.judgewindows[jud]/2 and note_audiopos >= curr_audiopos - game.judgewindows[jud]/2 then
                 print("judgement")
                 game:registerjudgment(jud)
-                table.remove(game.chart.notes, ind-1)
+                table.remove(game.chart.notes, ind)
                 return true
             end
         end
