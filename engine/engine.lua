@@ -35,6 +35,7 @@ function game:init()
 
     game.curr = {}
     game.curr.bpm = 1
+    game.curr.note = 1
 
     game.judgments = {
         0, 0, 0, 0, 0
@@ -68,13 +69,17 @@ function game:update()
         game.spb = 60/game.bpm
     end
 
-    local ind, closest = findclosestnote() or -1, {beat=math.huge}
-    local note_audiopos = (closest.beat*60) / game.bpm
     local curr_audiopos = game.audio:tell() + game:calcnoteoffset()
 
-    if curr_audiopos >= note_audiopos+game.judgewindows[4]/2 then
-        table.remove(game.chart.notes, ind)
-        game:registerjudgment(5)
+    local ind, bobj = findclosestnote()
+    if bobj then
+        local note_audiopos = (bobj.beat*60) / game.bpm
+
+        print(curr_audiopos, note_audiopos)
+        if curr_audiopos >= note_audiopos+game.judgewindows[4]/2 then
+            table.remove(game.chart.notes, ind)
+            game:registerjudgment(5)
+        end
     end
 
     game.beat = (curr_audiopos - game:calcnoteoffset())/game.spb
@@ -84,6 +89,7 @@ function game:registerjudgment(t)
     game.judgments[t] = game.judgments[t] + 1
     game.lastjudge = t
     game.lastjudgetime = love.timer.getTime()
+    game.curr.note = game.curr.note + 1
     if t == 4 then
         game.combo = 0
     else
@@ -105,9 +111,8 @@ function game:checkinput()
     if love.keyboard.isDown(game.keys[i]) then
         for jud=1,4 do
             if note_audiopos <= curr_audiopos + game.judgewindows[jud]/2 and note_audiopos >= curr_audiopos - game.judgewindows[jud]/2 then
-                print("judgement")
-                game:registerjudgment(jud)
                 table.remove(game.chart.notes, ind)
+                game:registerjudgment(jud)
                 return true
             end
         end

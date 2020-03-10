@@ -50,7 +50,7 @@ end
 
 function findclosestnote()
     local smallestSoFar, smallestIndex
-    local whatdoinamethisvar = game.chart.notes--h
+    local whatdoinamethisvar = trimtable(game.chart.notes, game.curr.note)
     for i, h in ipairs(whatdoinamethisvar) do
         local y = h.beat
         if not smallestSoFar or (math.abs(game.beat-y) < smallestSoFar) then

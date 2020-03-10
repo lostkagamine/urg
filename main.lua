@@ -20,7 +20,8 @@ game.inputoffset = 0 -- MILLISECONDS
 game.states = {
     'game',
     'songselect',
-    'loading'
+    'loading',
+    'results'
 }
 
 game.font = {
@@ -122,9 +123,9 @@ function love.keypressed(k, sc, r)
     local shift = love.keyboard.isDown('lshift')
     local offsetchange = 0
     if k == 'f11' then
-        if shift then offsetchange = -0.1 else offsetchange = -0.01 end
+        if shift then offsetchange = 0.1 else offsetchange = 0.01 end
         notify(string.format('Offset changed: %s => %s', game.inputoffset, game.inputoffset + offsetchange))
-        game.inputoffset = game.inputoffset + offsetchange
+        game.inputoffset = game.inputoffset - offsetchange
     end
     if k == 'f12' then
         if shift then offsetchange = 0.1 else offsetchange = 0.01 end
