@@ -19,7 +19,8 @@ game.inputoffset = 0 -- MILLISECONDS
 
 game.states = {
     'game',
-    'songselect'
+    'songselect',
+    'loading'
 }
 
 game.font = {
@@ -34,6 +35,16 @@ game.assets = {
 }
 
 game.songs = {}
+
+local loaderThread = love.thread.newThread('loader.lua')
+
+local currentNotification = nil
+local cnTime = 0
+
+function notify(text)
+    currentNotification = text
+    cnTime = love.timer.getTime()
+end
 
 function game:switchState(name, args)
     if not game.states[name] then
@@ -56,21 +67,22 @@ function love.load(args)
         game.states[i] = require("./states/"..i)
     end
 
-    local h = love.filesystem.getDirectoryItems('songs')
-    for _, i in ipairs(h) do
-        local obj = json.decode(love.filesystem.read(string.format('songs/%s/%s.json', i, i)))
-        -- inefficient?? ^^
-        --todo shit
-        obj.id = i
-        table.insert(game.songs, obj)
-    end
+    loaderThread:start()
 
-    game:switchState("songselect")
+    game:switchState("loading")
 end
 
 function love.update(dt)
     if game.state and game.state.update then
         game.state:update(dt)
+    end
+
+    local m = love.thread.getChannel('loader'):pop()
+    if m and game.stateName == 'loading' then
+        game.songs = m
+        game.state:doneLoading(function()
+            game:switchState('songselect')
+        end)
     end
 
     next_time = next_time + 1/MAX_FPS
@@ -79,6 +91,15 @@ end
 function love.draw()
     if game.state and game.state.draw then
         game.state:draw()
+    end
+
+    if currentNotification ~= nil then
+        love.graphics.setFont(game.font.med)
+        local notifalpha = 1.5 + (1 - (love.timer.getTime() - cnTime))
+        love.graphics.setColor(0.1, 0.1, 0.1, notifalpha)
+        love.graphics.rectangle('fill', 0, 0, widthex(currentNotification)+40, 60)
+        love.graphics.setColor(1, 1, 1, notifalpha)
+        love.graphics.print(currentNotification, 20, 20)
     end
 
     love.graphics.setFont(game.font.med)
@@ -98,6 +119,9 @@ function love.draw()
 end
 
 function love.keypressed(k, sc, r)
+    if k == 'f1' then
+        notify('calling notify() pops up a brief message in the top left!')
+    end
     if game.state and game.state.keyDown then
         game.state:keyDown(k, sc, r)
     end

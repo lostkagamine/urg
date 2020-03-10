@@ -19,6 +19,7 @@ function game:load(sobj)
     local h = love.filesystem.getInfo("songs/"..song, nil)
     if not h then error("Attempted to load non-existent song folder: "..song) end
     game.chart = sobj
+    table.sort(game.chart.notes, function(a, b) return a.beat < b.beat end) -- !!IMPORTANT!!
     local audio = love.audio.newSource(string.format("songs/%s/%s", song, game.chart.audio), "static")
     game.audio = audio
     game:switchState("game")
@@ -36,14 +37,15 @@ function game:init()
     game.curr.note = 1
 
     game.judgments = {
-        0, 0, 0, 0
+        0, 0, 0, 0, 0
     }
 
     game.judgewindows = {
         0.033,
         0.066,
         0.133,
-        0.300
+        0.300,
+        -1
     }
     game.lastjudge = 0
     game.lastjudgetime = 0
@@ -72,7 +74,7 @@ function game:update()
 
     if curr_audiopos >= note_audiopos+game.judgewindows[4]/2 then
         table.remove(game.chart.notes, ind)
-        game:registerjudgment(4)
+        game:registerjudgment(5)
     end
 
     game.beat = (curr_audiopos - game:calcnoteoffset())/game.spb
