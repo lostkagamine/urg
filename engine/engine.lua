@@ -5,6 +5,7 @@ game.keys = {
 }
 
 game.highspeed = 1 --lmao iidx term
+game.inputoffset = 0
 
 function game:load(sobj)
     -- Loads a song and begins gameplay.
@@ -34,7 +35,6 @@ function game:init()
 
     game.curr = {}
     game.curr.bpm = 1
-    game.curr.note = 1
 
     game.judgments = {
         0, 0, 0, 0, 0

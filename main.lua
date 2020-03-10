@@ -119,8 +119,17 @@ function love.draw()
 end
 
 function love.keypressed(k, sc, r)
-    if k == 'f1' then
-        notify('calling notify() pops up a brief message in the top left!')
+    local shift = love.keyboard.isDown('lshift')
+    local offsetchange = 0
+    if k == 'f11' then
+        if shift then offsetchange = -0.1 else offsetchange = -0.01 end
+        notify(string.format('Offset changed: %s => %s', game.inputoffset, game.inputoffset + offsetchange))
+        game.inputoffset = game.inputoffset + offsetchange
+    end
+    if k == 'f12' then
+        if shift then offsetchange = 0.1 else offsetchange = 0.01 end
+        notify(string.format('Offset changed: %s => %s', game.inputoffset, game.inputoffset + offsetchange))
+        game.inputoffset = game.inputoffset + offsetchange
     end
     if game.state and game.state.keyDown then
         game.state:keyDown(k, sc, r)

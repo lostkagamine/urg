@@ -14,7 +14,7 @@ return {
         love.graphics.setColor(1, 0.1, 0.1, 1)
         love.graphics.rectangle("fill", LEFT_OFFSET, (600)-BOTTOM_OFFSET, NOTE_WIDTH*LANE_COUNT, NOTE_HEIGHT)
 
-        local debug = string.format("engine debug\nb: %f\npos: %f\nind: %d\nbpm: %f", game.beat, game.audio:tell(), game.curr.note, game.bpm)
+        local debug = string.format("engine debug\nb: %f\npos: %f\nind: %d\nbpm: %f", game.beat, game.audio:tell(), game.curr.note, game.bpm or 0)
 
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.setFont(game.font.med)
