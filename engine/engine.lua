@@ -164,15 +164,14 @@ function game:registerjudgment(t)
     elseif t == 1 then
         if game:lifeActive('hard') or game:lifeActive('exhard') then
             game.life = game.life + 2
-        else
-            game.life = game.life + 3
         end
     elseif t == 2 then
         if game:lifeActive('hard') or game:lifeActive('exhard') then
             game.life = game.life + 1
-        else
-            game.life = game.life + 2
         end
+    end
+    if t == 1 or t == 2 and game:lifeActive('normal') then
+        game.life = game.life + math.floor(65 / (#game.origchart/2))
     end
 
     game.life = clamp(game.life, 0, 100)
