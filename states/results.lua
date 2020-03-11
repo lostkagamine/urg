@@ -17,7 +17,7 @@ return {
         love.graphics.print(string.format('%s - %s', game.chart.author, game.chart.title), 20, 60)
 
         for i, j in ipairs(judgments) do
-            love.graphics.print(string.format('%s - %d', j, game.judgments[i]), 20, 100+(i*65))
+            love.graphics.print(string.format('%s - %d', j, game.judgments[i]), 20, 100+(i*45))
         end
 
         love.graphics.print('EX-Score: '..self.exscore, 20, 600-65)

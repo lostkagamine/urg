@@ -38,7 +38,7 @@ return {
         love.graphics.setFont(game.font.med)
         love.graphics.print(debug, 0, height(game.font.med))
 
-        for i, obj in ipairs(game.chart.notes) do
+        for i, obj in ipairs(trimtable(game.chart.notes, game.curr.note)) do
             local j = obj.notes
             love.graphics.draw(game.assets.note, LEFT_OFFSET+((j-1)*NOTE_WIDTH), (600-BOTTOM_OFFSET)-((obj.beat-game.beat)*NOTE_HEIGHT*(6*game.highspeed)))
         end
