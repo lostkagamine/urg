@@ -8,6 +8,10 @@ game.highspeed = 1 --lmao iidx term
 game.lifetype = "normal"
 game.inputoffset = 0
 
+game.mods = {
+    random = 'off'
+}
+
 function game:load(sobj)
     -- Loads a song and begins gameplay.
 
@@ -21,10 +25,27 @@ function game:load(sobj)
     local h = love.filesystem.getInfo("songs/"..song, nil)
     if not h then error("Attempted to load non-existent song folder: "..song) end
     game.chart = json.decode(love.filesystem.read(string.format('songs/%s/%s.json', song, song)))
+    game.origchart = trimtable(game.chart.notes, 1) -- hee hee copy hack
+    game:preprocessChart()
     table.sort(game.chart.notes, function(a, b) return a.beat < b.beat end) -- !!IMPORTANT!!
     local audio = love.audio.newSource(string.format("songs/%s/%s", song, game.chart.audio), "static")
     game.audio = audio
     game:switchState("game")
+end
+
+function game:preprocessChart()
+    if game.mods.random == 'srandom' then
+        for i=1,#game.chart.notes do
+            game.chart.notes[i].note = math.random(1, LANE_COUNT)
+        end
+    elseif game.mods.random == 'random' then
+        local ranmap = {}
+        for i=1,LANE_COUNT do table.insert(ranmap, i) end
+        ranmap = shuffle(ranmap)
+        for i=1,#game.chart.notes do
+            game.chart.notes[i].note = ranmap[game.chart.notes[i].note]
+        end
+    end
 end
 
 function game:lifeActive(h)
@@ -140,7 +161,13 @@ function game:registerjudgment(t)
         else
             game.life = game.life - 8
         end
-    else
+    elseif t == 1 then
+        if game:lifeActive('hard') or game:lifeActive('exhard') then
+            game.life = game.life + 2
+        else
+            game.life = game.life + 3
+        end
+    elseif t == 2 then
         if game:lifeActive('hard') or game:lifeActive('exhard') then
             game.life = game.life + 1
         else
@@ -166,7 +193,7 @@ function game:checkinput()
 
     -- UHHHH
 
-    local i = bobj.notes
+    local i = bobj.note
     if love.keyboard.isDown(game.keys[i]) then
         for jud=1,4 do
             if note_audiopos <= curr_audiopos + game.judgewindows[jud]/2 and note_audiopos >= curr_audiopos - game.judgewindows[jud]/2 then

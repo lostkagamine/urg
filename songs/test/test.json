@@ -7,14 +7,14 @@
         [0, 120]
     ],
     "notes": [
-        {"beat": 1, "notes": 1},
-        {"beat": 2, "notes": 2},
-        {"beat": 2, "notes": 3},
-        {"beat": 3, "notes": 3},
-        {"beat": 4, "notes": 4},
-        {"beat": 5, "notes": 1},
-        {"beat": 5, "notes": 2},
-        {"beat": 5, "notes": 3},
-        {"beat": 5, "notes": 4}
+        {"beat": 1, "note": 1},
+        {"beat": 2, "note": 2},
+        {"beat": 2, "note": 3},
+        {"beat": 3, "note": 3},
+        {"beat": 4, "note": 4},
+        {"beat": 5, "note": 1},
+        {"beat": 5, "note": 2},
+        {"beat": 5, "note": 3},
+        {"beat": 5, "note": 4}
     ]
 }

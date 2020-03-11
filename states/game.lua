@@ -45,7 +45,7 @@ return {
         love.graphics.print(debug, 0, height(game.font.med))
 
         for i, obj in ipairs(trimtable(game.chart.notes, game.curr.note)) do
-            local j = obj.notes
+            local j = obj.note
             love.graphics.draw(game.assets.note, LEFT_OFFSET+((j-1)*NOTE_WIDTH), (600-BOTTOM_OFFSET)-((obj.beat-game.beat)*NOTE_HEIGHT*(6*game.highspeed)))
         end
 
@@ -55,7 +55,7 @@ return {
             if game.combo == 0 then
                 judge = judgments[game.lastjudge]
             end
-            love.graphics.print(judge, LEFT_OFFSET+(widthex(judge)/2), 430)
+            love.graphics.print(judge, LEFT_OFFSET*3-(widthex(judge)/2), 430)
         end
         
         love.graphics.setFont(game.font.med)

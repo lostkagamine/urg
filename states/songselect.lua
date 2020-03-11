@@ -3,14 +3,21 @@ local ltnames = {
     hard = 'Hard',
     exhard = 'EX-Hard'
 }
+local rannames = {
+    off = 'Off',
+    random = 'Random',
+    srandom = 'S-Random'
+}
 
 local barcycle = {'normal', 'hard', 'exhard'}
+local rancycle = {'off', 'random', 'srandom'}
 
 local selectedindex = 1
 
 return {
     init = function(self)
         self.barindex = index(barcycle, game.lifetype)
+        self.ranindex = index(rancycle, game.mods.random)
         self.optionspanel = false
         self.optionstime = love.timer.getTime()
     end,
@@ -46,9 +53,10 @@ return {
             
 High-speed: %sx (Q/W)
 Life bar: %s (E)
-Lane cover: NOT IMPLEMENTED (R)
+Random: %s (R)
+Lane cover: NOT IMPLEMENTED (A)
 
-Please check back at a later date!]], tostring(game.highspeed), ltnames[game.lifetype])
+Please check back at a later date!]], tostring(game.highspeed), ltnames[game.lifetype], rannames[game.mods.random])
             love.graphics.print(fstr, 20, 20)
         end
     end,
@@ -85,6 +93,10 @@ Please check back at a later date!]], tostring(game.highspeed), ltnames[game.lif
             if k == 'e' then
                 self.barindex = self.barindex + 1
                 game.lifetype = barcycle[math.mod(self.barindex-1, #barcycle)+1]
+            end
+            if k == 'r' then
+                self.ranindex = self.ranindex + 1
+                game.mods.random = rancycle[math.mod(self.ranindex-1, #rancycle)+1]
             end
         end
     end,

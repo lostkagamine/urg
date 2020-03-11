@@ -7,21 +7,21 @@
         [0, 120]
     ],
     "notes": [
-        {"beat": 1, "notes": 1},
-        {"beat": 1.5, "notes": 4},
-        {"beat": 2, "notes": 1},
-        {"beat": 2.5, "notes": 4},
-        {"beat": 3, "notes": 1},
-        {"beat": 3.5, "notes": 4},
-        {"beat": 4, "notes": 1},
-        {"beat": 4.5, "notes": 4},
-        {"beat": 5, "notes": 1},
-        {"beat": 5.5, "notes": 4},
-        {"beat": 6, "notes": 1},
-        {"beat": 6.5, "notes": 4},
-        {"beat": 7, "notes": 1},
-        {"beat": 7.5, "notes": 4},
-        {"beat": 8, "notes": 4},
-        {"beat": 8, "notes": 1}
+        {"beat": 1, "note": 1},
+        {"beat": 1.5, "note": 4},
+        {"beat": 2, "note": 1},
+        {"beat": 2.5, "note": 4},
+        {"beat": 3, "note": 1},
+        {"beat": 3.5, "note": 4},
+        {"beat": 4, "note": 1},
+        {"beat": 4.5, "note": 4},
+        {"beat": 5, "note": 1},
+        {"beat": 5.5, "note": 4},
+        {"beat": 6, "note": 1},
+        {"beat": 6.5, "note": 4},
+        {"beat": 7, "note": 1},
+        {"beat": 7.5, "note": 4},
+        {"beat": 8, "note": 4},
+        {"beat": 8, "note": 1}
     ]
 }

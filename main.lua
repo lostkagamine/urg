@@ -35,6 +35,8 @@ game.assets = {
     note = love.graphics.newImage('assets/note.png')
 }
 
+game.grades = {'F', 'E', 'D', 'C', 'B', 'A', 'AA', 'AAA'}
+
 game.sounds = {
     cursor = love.audio.newSource('assets/change.wav', 'static')
 }
@@ -70,6 +72,9 @@ end
 function love.load(args)
     for _, i in ipairs(game.states) do -- handle state loading
         game.states[i] = require("./states/"..i)
+    end
+    for _, i in ipairs(game.grades) do
+        game.grades[i] = love.graphics.newImage('assets/grade/'..string.lower(i)..'.png')
     end
 
     loaderThread:start()
@@ -128,7 +133,7 @@ function love.keypressed(k, sc, r)
     local offsetchange = 0
     if k == 'f11' then
         if shift then offsetchange = 0.1 else offsetchange = 0.01 end
-        notify(string.format('Offset changed: %s => %s', game.inputoffset, game.inputoffset + offsetchange))
+        notify(string.format('Offset changed: %s => %s', game.inputoffset, game.inputoffset - offsetchange))
         game.inputoffset = game.inputoffset - offsetchange
     end
     if k == 'f12' then
