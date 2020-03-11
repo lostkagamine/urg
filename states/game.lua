@@ -55,7 +55,7 @@ return {
             if game.combo == 0 then
                 judge = judgments[game.lastjudge]
             end
-            love.graphics.print(judge, LEFT_OFFSET*3-(widthex(judge)/2), 430)
+            love.graphics.print(judge, (NOTE_WIDTH*LANE_COUNT+LEFT_OFFSET)*0.6-(widthex(judge)/2), 430)
         end
         
         love.graphics.setFont(game.font.med)
