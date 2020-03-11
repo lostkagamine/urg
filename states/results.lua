@@ -12,7 +12,7 @@ return {
     end,
     draw = function(self)
         love.graphics.setFont(game.font.ssbig)
-        love.graphics.print('Results', 20, 20)
+        love.graphics.print(tern(game.clear, 'Stage cleared!', 'Stage failed...'), 20, 20)
         love.graphics.setFont(game.font.ssmed)
         love.graphics.print(string.format('%s - %s', game.chart.author, game.chart.title), 20, 60)
 

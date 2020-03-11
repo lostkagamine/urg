@@ -33,6 +33,8 @@ function game:init()
 
     game.started = false
 
+    game.clear = true
+
     game.curr = {}
     game.curr.bpm = 1
     game.curr.note = 1
@@ -98,7 +100,7 @@ end
 
 function game:checkinput()
     local ind, bobj = findclosestnote()
-    if not bobj then return false end
+    if not bobj then return true end
     local note_audiopos = (bobj.beat*60) / game.bpm
     local curr_audiopos = game.audio:tell() + game:calcnoteoffset()
 
@@ -111,10 +113,10 @@ function game:checkinput()
         for jud=1,4 do
             if note_audiopos <= curr_audiopos + game.judgewindows[jud]/2 and note_audiopos >= curr_audiopos - game.judgewindows[jud]/2 then
                 game:registerjudgment(jud)
-                return true
+                return false
             end
         end
-        return false
+        return true
     end
 end
 

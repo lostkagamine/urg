@@ -60,3 +60,7 @@ function findclosestnote()
     end
     return smallestIndex, whatdoinamethisvar[smallestIndex]
 end
+
+function tern(c, t, f)
+    if c then return t else return f end
+end
