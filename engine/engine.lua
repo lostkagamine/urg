@@ -126,7 +126,7 @@ function game:registerjudgment(t)
 
     if t == 4 then
         if game:lifeActive('hard') then
-            game.life = game.life - 6
+            game.life = game.life - 4
         elseif game:lifeActive('exhard') then
             game.life = game.life - 10
         else
@@ -134,7 +134,7 @@ function game:registerjudgment(t)
         end
     elseif t == 5 then
         if game:lifeActive('hard') then
-            game.life = game.life - 10
+            game.life = game.life - 9
         elseif game:lifeActive('exhard') then
             game.life = game.life - 18
         else

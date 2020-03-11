@@ -6,9 +6,10 @@ local ltnames = {
 
 local barcycle = {'normal', 'hard', 'exhard'}
 
+local selectedindex = 1
+
 return {
     init = function(self)
-        self.selectedindex = 1
         self.barindex = index(barcycle, game.lifetype)
         self.optionspanel = false
         self.optionstime = love.timer.getTime()
@@ -17,22 +18,22 @@ return {
         love.graphics.setFont(game.font.ssbig)
         love.graphics.print('Select music', 20, 20)
 
-        local songname = game.songs[self.selectedindex].title
+        local songname = game.songs[selectedindex].title
         local stxt = string.format('%s', songname)
         love.graphics.print(stxt, 800-10-widthex(stxt), cen_y(stxt))
 
         love.graphics.setFont(game.font.ssmed)
         love.graphics.setColor(0.7, 0.7, 0.7, 1)
-        for i=self.selectedindex+1,#game.songs do
+        for i=selectedindex+1,#game.songs do
             local so = game.songs[i]
             local sn = so.title
-            love.graphics.print(sn, 800-10-widthex(sn), cen_y(sn)+game.font.ssbig:getHeight(stxt)/2+15+((i-self.selectedindex-1)*heightex(sn)))
+            love.graphics.print(sn, 800-10-widthex(sn), cen_y(sn)+game.font.ssbig:getHeight(stxt)/2+15+((i-selectedindex-1)*heightex(sn)))
         end
 
-        for i=self.selectedindex-1,1,-1 do
+        for i=selectedindex-1,1,-1 do
             local so = game.songs[i]
             local sn = so.title
-            love.graphics.print(sn, 800-10-widthex(sn), cen_y(sn)-game.font.ssbig:getHeight(stxt)/2-15-(-(i-self.selectedindex+1)*heightex(sn)))
+            love.graphics.print(sn, 800-10-widthex(sn), cen_y(sn)-game.font.ssbig:getHeight(stxt)/2-15-(-(i-selectedindex+1)*heightex(sn)))
         end
 
         if self.optionspanel then
@@ -53,19 +54,21 @@ Please check back at a later date!]], tostring(game.highspeed), ltnames[game.lif
     end,
     keyDown = function(self, k, sc, r)
         if k == 'down' then
-            self.selectedindex = self.selectedindex + 1
-            if self.selectedindex > #game.songs then
-                self.selectedindex = 1
+            selectedindex = selectedindex + 1
+            if selectedindex > #game.songs then
+                selectedindex = 1
             end
+            game.sounds.cursor:play()
         end
         if k == 'up' then
-            self.selectedindex = self.selectedindex - 1
-            if self.selectedindex < 1 then
-                self.selectedindex = #game.songs
+            selectedindex = selectedindex - 1
+            if selectedindex < 1 then
+                selectedindex = #game.songs
             end
+            game.sounds.cursor:play()
         end
         if k == 'return' then
-            game:load(game.songs[self.selectedindex])
+            game:load(game.songs[selectedindex])
         end
         if k == 'space' then
             self.optionspanel = true

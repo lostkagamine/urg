@@ -35,6 +35,10 @@ game.assets = {
     note = love.graphics.newImage('assets/note.png')
 }
 
+game.sounds = {
+    cursor = love.audio.newSource('assets/change.wav', 'static')
+}
+
 game.songs = {}
 
 local loaderThread = love.thread.newThread('loader.lua')
