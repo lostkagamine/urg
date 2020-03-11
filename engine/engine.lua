@@ -5,6 +5,7 @@ game.keys = {
 }
 
 game.highspeed = 1 --lmao iidx term
+game.lifetype = "normal"
 game.inputoffset = 0
 
 function game:load(sobj)
@@ -26,10 +27,21 @@ function game:load(sobj)
     game:switchState("game")
 end
 
+function game:lifeActive(h)
+    return game.lifetype == h
+end
+
 function game:init()
     game.beat = 0
     game.currentbpm = 0
     game.spb = 0
+
+    game.ended = false
+
+    game.life = 20
+    if game:lifeActive('hard') or game:lifeActive('exhard') then
+        game.life = 100
+    end
 
     game.started = false
 
@@ -71,30 +83,76 @@ function game:update()
         game.spb = 60/game.bpm
     end
 
+    if game.started and not game.audio:isPlaying() and not game.ended then
+        game:endSong()
+    end
+
     local curr_audiopos = game.audio:tell() + game:calcnoteoffset()
 
-    local ind, bobj = findclosestnote()
-    if bobj then
-        local note_audiopos = (bobj.beat*60) / game.bpm
+    if not game.ended then
+        local bobj = game.chart.notes[1]
+        if bobj then
+            local note_audiopos = (bobj.beat*60) / game.bpm
 
-        print(curr_audiopos, note_audiopos)
-        if curr_audiopos >= note_audiopos+game.judgewindows[4]/2 then
-            game:registerjudgment(5)
+            print(curr_audiopos, note_audiopos)
+            if curr_audiopos >= note_audiopos+game.judgewindows[4]/2 then
+                print('MISS')
+                game:registerjudgment(5)
+                table.remove(game.chart.notes, 1)
+            end
         end
     end
 
     game.beat = (curr_audiopos - game:calcnoteoffset())/game.spb
 end
 
+function game:endSong()
+    game.audio:stop()
+    game.ended = true
+    if game:lifeActive('normal') then
+        if game.life >= 80 then game.clear = true else game.clear = false end
+    end
+end
+
 function game:registerjudgment(t)
     game.judgments[t] = game.judgments[t] + 1
     game.lastjudge = t
     game.lastjudgetime = love.timer.getTime()
-    game.curr.note = game.curr.note + 1
     if t == 4 or t == 5 then
         game.combo = 0
     else
         game.combo = game.combo + 1
+    end
+
+    if t == 4 then
+        if game:lifeActive('hard') then
+            game.life = game.life - 6
+        elseif game:lifeActive('exhard') then
+            game.life = game.life - 10
+        else
+            game.life = game.life - 5
+        end
+    elseif t == 5 then
+        if game:lifeActive('hard') then
+            game.life = game.life - 10
+        elseif game:lifeActive('exhard') then
+            game.life = game.life - 18
+        else
+            game.life = game.life - 8
+        end
+    else
+        if game:lifeActive('hard') or game:lifeActive('exhard') then
+            game.life = game.life + 1
+        else
+            game.life = game.life + 2
+        end
+    end
+
+    game.life = clamp(game.life, 0, 100)
+    
+    if game.life <= 0 and (game:lifeActive('hard') or game:lifeActive('exhard')) then
+        game.clear = false
+        game:endSong()
     end
 end
 
@@ -113,6 +171,7 @@ function game:checkinput()
         for jud=1,4 do
             if note_audiopos <= curr_audiopos + game.judgewindows[jud]/2 and note_audiopos >= curr_audiopos - game.judgewindows[jud]/2 then
                 game:registerjudgment(jud)
+                table.remove(game.chart.notes, ind)
                 return false
             end
         end

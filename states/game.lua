@@ -6,6 +6,12 @@ local judgments = {
     "Miss..."
 }
 
+local lifecolors = {
+    normal = {0, 0.8, 0.8, 1},
+    hard = {0.9, 0.05, 0.05, 1},
+    exhard = {0.9, 0.9, 0.05, 1}
+}
+
 local fotime = 3
 
 return {
@@ -17,7 +23,7 @@ return {
     update = function(self, t)
         game:update()
 
-        if game.started and not game.audio:isPlaying() and not self.fadeout then
+        if game.ended and not self.fadeout then
             self.fadeouttime = love.timer.getTime()
             self.fadeout = true
         end
@@ -55,6 +61,10 @@ return {
         love.graphics.setFont(game.font.med)
         local song = string.format("%s - %s", game.chart.author, game.chart.title)
         love.graphics.print(song, cen_x(song), 150)
+
+        love.graphics.setColor(unpack(lifecolors[game.lifetype]))
+        love.graphics.rectangle('fill', LEFT_OFFSET, (600-BOTTOM_OFFSET+NOTE_HEIGHT), game.life/100 * (NOTE_WIDTH*LANE_COUNT), 15)
+        love.graphics.setColor(1, 1, 1, 1)
 
         if self.fadeout then
             local h = (love.timer.getTime() - self.fadeouttime) / fotime -- take 2s to fade out?

@@ -64,3 +64,30 @@ end
 function tern(c, t, f)
     if c then return t else return f end
 end
+
+function enum(name)
+    return function(t)
+        local nt = {}
+        for i, j in ipairs(t) do
+            if type(i) == 'number' then
+                nt[j] = i
+            else
+                nt[i] = j
+            end
+        end
+        _G[name] = nt
+    end
+end
+
+function clamp(n, min, max)
+    if n > max then return max end
+    if n < min then return min end
+    return n
+end
+
+function index(tab, el)
+    for i, j in ipairs(tab) do
+        if j == el then return i end
+    end
+    return -1
+end
