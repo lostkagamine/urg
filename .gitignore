@@ -1,3 +1,4 @@
 *.bms
 songs/*
 output.json
+node_modules/
