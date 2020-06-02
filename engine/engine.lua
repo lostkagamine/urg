@@ -1,7 +1,7 @@
 game = {}
 
 game.keys = {
-    "d", "f", "j", "k"
+    "lshift", "s", "d", "f", "space", "j", "k", "l"
 }
 
 game.highspeed = 1 --lmao iidx term
@@ -115,9 +115,7 @@ function game:update()
         if bobj then
             local note_audiopos = (bobj.beat*60) / game.bpm
 
-            print(curr_audiopos, note_audiopos)
             if curr_audiopos >= note_audiopos+game.judgewindows[4]/2 then
-                print('MISS')
                 game:registerjudgment(5)
                 table.remove(game.chart.notes, 1)
             end

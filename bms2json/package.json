@@ -1,0 +1,21 @@
+{
+  "name": "bms2json",
+  "version": "1.0.0",
+  "description": "converts BMS files to URG JSON files",
+  "main": "bms2json.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rin",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "bemuse-chardet": "0.0.8",
+    "data-structure": "^1.2.0",
+    "iconv-lite": "^0.4.5",
+    "invariant": "^2.1.0",
+    "lodash.assign": "^3.2.0",
+    "lodash.pluck": "^3.1.2",
+    "lodash.uniq": "^3.2.1",
+    "lodash.values": "^3.0.0"
+  }
+}
