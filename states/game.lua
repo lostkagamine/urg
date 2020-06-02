@@ -14,6 +14,16 @@ local lifecolors = {
 
 local fotime = 3
 
+local function dotitle(song)
+    local songname = song.title
+    local songdiff = song.difficulty
+    local nameappend = ''
+    if songdiff then
+        nameappend = string.format(' [%s]', songdiff)
+    end
+    return songname..nameappend
+end
+
 return {
     init = function(self)
         self.time = love.timer.getTime()
@@ -42,11 +52,16 @@ return {
 
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.setFont(game.font.med)
-        love.graphics.print(debug, 0, height(game.font.med))
+        --love.graphics.print(debug, 0, height(game.font.med))
+
+        local stats = string.format("HS %sx - BPM %d", game.highspeed, game.bpm)
+        love.graphics.print(stats, 10, 600-10-(heightex(stats)))
 
         for i, obj in ipairs(trimtable(game.chart.notes, game.curr.note)) do
             local j = obj.note
-            love.graphics.draw(game.assets.note, LEFT_OFFSET+((j-1)*NOTE_WIDTH), (600-BOTTOM_OFFSET)-((obj.beat-game.beat)*NOTE_HEIGHT*(6*game.highspeed)))
+            local bigscaryformula = (600-BOTTOM_OFFSET)-((obj.beat-game.beat)*NOTE_HEIGHT*(6*game.highspeed))
+            local stop = (600-BOTTOM_OFFSET)
+            love.graphics.draw(game.assets.note, LEFT_OFFSET+((j-1)*NOTE_WIDTH), math.min(bigscaryformula, stop))
         end
 
         if game.lastjudgetime <= love.timer.getTime()+0.75 and game.lastjudge ~= 0 then
@@ -59,8 +74,8 @@ return {
         end
         
         love.graphics.setFont(game.font.med)
-        local song = string.format("%s - %s", game.chart.author, game.chart.title)
-        love.graphics.print(song, cen_x(song), 150)
+        local song = string.format("%s - %s", game.chart.author, dotitle(game.chart))
+        love.graphics.print(song, 800-(widthex(song))-20, 20)
 
         love.graphics.setColor(unpack(lifecolors[game.lifetype]))
         love.graphics.rectangle('fill', LEFT_OFFSET, (600-BOTTOM_OFFSET+NOTE_HEIGHT), game.life/100 * (NOTE_WIDTH*LANE_COUNT), 15)
@@ -74,6 +89,11 @@ return {
         end
     end,
     keyDown = function(self, k, sc, r)
+        if k == "escape" then
+            game.clear = false
+            game:endSong(true)
+        end
+
         game:checkinputex()
     end
 }

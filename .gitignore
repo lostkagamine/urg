@@ -1,4 +1,9 @@
 *.bms
+*.bme
+*.bml
 songs/*
 output.json
 node_modules/
+bms2json/*.json
+!bms2json/package.json
+!bms2json/package-lock.json

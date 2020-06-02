@@ -10,8 +10,9 @@ const fs = require('fs');
 const bms = require('./bms-js');
 
 let filename = process.argv[2];
-if (!filename) {
-    console.log('usage: node bms2json.js <FILE.bms> [outputfile.json, defaults to "output.json"]');
+let audiofile = process.argv[3];
+if (!filename || !audiofile) {
+    console.log('usage: node bms2json.js <FILE.bms> <AUDIOFILENAME> [outputfile.json, defaults to "output.json"]');
     process.exit(0);
 }
 
@@ -24,7 +25,7 @@ try {
     process.exit(1)
 }
 
-let output = {title: 'x', author: 'y', offset: 0, audio: 'FILL_THIS_IN.wav', bpms: [[0, 130]], notes: []};
+let output = {title: 'x', author: 'y', offset: 0, audio: audiofile, bpms: [[0, 130]], notes: []};
 
 let compileResult = bms.Compiler.compile(bms.Reader.read(fileString));
 let chart = compileResult.chart;
@@ -50,5 +51,5 @@ for (let i of anotes) {
     output.notes.push({beat: i.beat, note: mapping[i.column]});
 }
 
-fs.writeFileSync(process.argv[3] || 'output.json', JSON.stringify(output));
+fs.writeFileSync(process.argv[4] || 'output.json', JSON.stringify(output));
 console.log('-- OK --')

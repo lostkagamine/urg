@@ -22,6 +22,16 @@ local function doScore(percent)
     return grades[math.floor(percent*#grades)+1]
 end
 
+local function dotitle(song)
+    local songname = song.title
+    local songdiff = song.difficulty
+    local nameappend = ''
+    if songdiff then
+        nameappend = string.format(' [%s]', songdiff)
+    end
+    return songname..nameappend
+end
+
 return {
     init = function(self)
         self.exscore = (game.judgments[1] * 2) + game.judgments[2]
@@ -36,7 +46,7 @@ return {
         love.graphics.print(string.format([[%s - %s
 Clear type: %s
 High-speed: %s
-Random: %s]], game.chart.author, game.chart.title, ltnames[game.lifetype], tostring(game.highspeed), rannames[game.mods.random]), 20, 60)
+Random: %s]], game.chart.author, dotitle(game.chart), ltnames[game.lifetype], tostring(game.highspeed), rannames[game.mods.random]), 20, 60)
 
         for i, j in ipairs(judgments) do
             love.graphics.print(string.format('%s - %d', j, game.judgments[i]), 20, 150+(i*45))

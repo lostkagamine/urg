@@ -1,7 +1,7 @@
 game = {}
 
 game.keys = {
-    "lshift", "s", "d", "f", "space", "j", "k", "l"
+    "lshift", "z", "s", "x", "d", "c", "f", "v"
 }
 
 game.highspeed = 1 --lmao iidx term
@@ -125,10 +125,10 @@ function game:update()
     game.beat = (curr_audiopos - game:calcnoteoffset())/game.spb
 end
 
-function game:endSong()
+function game:endSong(dontCheckClear)
     game.audio:stop()
     game.ended = true
-    if game:lifeActive('normal') then
+    if game:lifeActive('normal') and not dontCheckClear then
         if game.life >= 80 then game.clear = true else game.clear = false end
     end
 end

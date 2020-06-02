@@ -14,6 +14,16 @@ local rancycle = {'off', 'random', 'srandom'}
 
 local selectedindex = 1
 
+local function dotitle(song)
+    local songname = song.title
+    local songdiff = song.difficulty
+    local nameappend = ''
+    if songdiff then
+        nameappend = string.format(' [%s]', songdiff)
+    end
+    return songname..nameappend
+end
+
 return {
     init = function(self)
         self.barindex = index(barcycle, game.lifetype)
@@ -25,21 +35,20 @@ return {
         love.graphics.setFont(game.font.ssbig)
         love.graphics.print('Select music', 20, 20)
 
-        local songname = game.songs[selectedindex].title
-        local stxt = string.format('%s', songname)
+        local stxt = dotitle(game.songs[selectedindex])
         love.graphics.print(stxt, 800-10-widthex(stxt), cen_y(stxt))
 
         love.graphics.setFont(game.font.ssmed)
         love.graphics.setColor(0.7, 0.7, 0.7, 1)
         for i=selectedindex+1,#game.songs do
             local so = game.songs[i]
-            local sn = so.title
+            local sn = dotitle(so)
             love.graphics.print(sn, 800-10-widthex(sn), cen_y(sn)+game.font.ssbig:getHeight(stxt)/2+15+((i-selectedindex-1)*heightex(sn)))
         end
 
         for i=selectedindex-1,1,-1 do
             local so = game.songs[i]
-            local sn = so.title
+            local sn = dotitle(so)
             love.graphics.print(sn, 800-10-widthex(sn), cen_y(sn)-game.font.ssbig:getHeight(stxt)/2-15-(-(i-selectedindex+1)*heightex(sn)))
         end
 
